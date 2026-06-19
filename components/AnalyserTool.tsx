@@ -96,11 +96,8 @@ export default function AnalyserTool() {
               placeholder="Paste your booking confirmation email, rental T&Cs, or any car hire contract text here…"
               style={{ width: "100%", minHeight: 220, padding: "16px 18px", border: "none", outline: "none", fontFamily: "inherit", fontSize: 13, lineHeight: 1.65, color: "#1f2937", resize: "vertical" as const, boxSizing: "border-box" as const }}
             />
-            <div style={{ padding: "8px 18px", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ padding: "8px 18px", borderTop: "1px solid #f1f5f9" }}>
               <span style={{ fontSize: 11, color: "#9ca3af" }}>{termsText.length} characters</span>
-              <button onClick={loadExample} style={{ fontSize: 12, color: "#e63946", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>
-                Load real example (mirrors Liverpool Airport denial case) →
-              </button>
             </div>
           </div>
         )}
