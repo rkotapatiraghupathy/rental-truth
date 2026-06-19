@@ -8,13 +8,13 @@ export default function Home() {
       {/* Nav */}
       <nav style={{ background: "#1a1a2e", padding: "0 24px", borderBottom: "3px solid #e63946", position: "sticky", top: 0, zIndex: 50 }}>
         <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", height: 56 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <a href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
             <span style={{ fontSize: 20 }}>🔍</span>
             <span style={{ color: "#fff", fontSize: 20, fontWeight: 800, letterSpacing: "-0.5px" }}>
               Rental<span style={{ color: "#e63946" }}>Truth</span>
             </span>
             <span style={{ background: "#e63946", color: "#fff", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 4, letterSpacing: "0.05em" }}>BETA</span>
-          </div>
+          </a>
           <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
             <a href="#problem" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>The Problem</a>
             <a href="#tool" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>Try It</a>
@@ -29,7 +29,7 @@ export default function Home() {
           <div style={{ display: "inline-block", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 20, padding: "4px 14px", fontSize: 12, fontWeight: 600, color: "#e63946", marginBottom: 20, letterSpacing: "0.05em" }}>
             TRAVEL TECH · CONSUMER TRANSPARENCY
           </div>
-          <h1 style={{ color: "#fff", fontSize: 42, fontWeight: 900, lineHeight: 1.12, margin: "0 0 20px", letterSpacing: "-1.5px" }}>
+          <h1 style={{ color: "#fff", fontSize: "clamp(24px, 5vw, 42px)", fontWeight: 900, lineHeight: 1.12, margin: "0 0 20px", letterSpacing: "-1.5px" }}>
             The transparency layer<br />
             <span style={{ color: "#e63946" }}>travel booking is missing</span>
           </h1>
@@ -46,7 +46,7 @@ export default function Home() {
 
       {/* Stats bar */}
       <div style={{ background: "#16213e", padding: "20px 24px", borderBottom: "1px solid #1e2d45" }}>
-        <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", justifyContent: "center", gap: 56, flexWrap: "wrap" }}>
+        <div className="stats-bar-inner" style={{ maxWidth: 780, margin: "0 auto", display: "flex", justifyContent: "center", gap: 56, flexWrap: "wrap" }}>
           {[
             { stat: "£28bn", label: "Global car hire market" },
             { stat: "1 in 8", label: "Customers face surprise restrictions" },
@@ -67,12 +67,12 @@ export default function Home() {
         <section id="problem" style={{ padding: "60px 0 0" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             {/* Founder story card */}
-            <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 14, padding: "28px 30px", gridColumn: "1 / -1" }}>
+            <div className="hover-card" style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 14, padding: "28px 30px", gridColumn: "1 / -1" }}>
               <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#e63946", marginBottom: 12 }}>Why We Built This</div>
               <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", margin: "0 0 16px", lineHeight: 1.3 }}>
                 &ldquo;I arrived at the desk with a confirmed booking. They refused the car. The restriction was on page 8 of the terms.&rdquo;
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+              <div className="founder-inner" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                 <div style={{ fontSize: 14, color: "#374151", lineHeight: 1.75 }}>
                   <p style={{ margin: "0 0 12px" }}>
                     In June 2026, our founder booked a car from Liverpool Airport through a major comparison site. He arrived at the agreed time, confirmation in hand. Alamo refused the vehicle — because the booking was airport-only, meaning it required proof of an inbound flight.
@@ -116,7 +116,7 @@ export default function Home() {
               { icon: "⛽", title: "Fuel policy traps", desc: "Full-to-full vs full-to-empty policies costing £50+ if missed." },
               { icon: "❌", title: "Non-refundable terms", desc: "Zero recourse if denied at desk or unable to collect." },
             ].map(({ icon, title, desc }) => (
-              <div key={title} style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 10, padding: "16px" }}>
+              <div key={title} className="hover-card" style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 10, padding: "16px" }}>
                 <div style={{ fontSize: 22, marginBottom: 8 }}>{icon}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 4 }}>{title}</div>
                 <p style={{ margin: 0, fontSize: 12, color: "#6b7280", lineHeight: 1.5 }}>{desc}</p>
@@ -136,7 +136,7 @@ export default function Home() {
               { step: "3", icon: "🤖", title: "AI analyses", desc: "Flags restrictions, checks disclosure" },
               { step: "4", icon: "⚖️", title: "Get report", desc: "Download report + complaint letter if needed" },
             ].map(({ step, icon, title, desc }) => (
-              <div key={step} style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 10, padding: "18px 14px", textAlign: "center" }}>
+              <div key={step} className="hover-card" style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 10, padding: "18px 14px", textAlign: "center" }}>
                 <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#e63946", color: "#fff", fontWeight: 800, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>{step}</div>
                 <div style={{ fontSize: 22, marginBottom: 6 }}>{icon}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 3 }}>{title}</div>

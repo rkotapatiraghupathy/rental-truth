@@ -3,12 +3,12 @@ import { useState } from "react";
 import type { AnalysisResult } from "@/lib/types";
 import FlagCard from "./FlagCard";
 
-const RISK_COLOURS: Record<string, { bg: string; text: string; border: string; label: string }> = {
-  LOW:      { bg: "#e8f5e9", text: "#1b5e20", border: "#a5d6a7", label: "Low Risk" },
-  MEDIUM:   { bg: "#fff8e1", text: "#b45309", border: "#fcd34d", label: "Some Restrictions" },
-  HIGH:     { bg: "#fff3e0", text: "#bf360c", border: "#ffab91", label: "High Risk" },
-  CRITICAL: { bg: "#ffebee", text: "#b71c1c", border: "#ef9a9a", label: "Critical — Read Before Booking" },
-  UNKNOWN:  { bg: "#f3f4f6", text: "#6b7280", border: "#d1d5db", label: "Insufficient Information" },
+const RISK_COLOURS: Record<string, { bg: string; text: string; border: string; label: string; emoji: string }> = {
+  LOW:      { bg: "#e8f5e9", text: "#1b5e20", border: "#a5d6a7", label: "Low Risk",                      emoji: "🟢" },
+  MEDIUM:   { bg: "#fff8e1", text: "#b45309", border: "#fcd34d", label: "Some Restrictions",              emoji: "🟡" },
+  HIGH:     { bg: "#fff3e0", text: "#bf360c", border: "#ffab91", label: "High Risk",                      emoji: "🔴" },
+  CRITICAL: { bg: "#ffebee", text: "#b71c1c", border: "#ef9a9a", label: "Critical — Read Before Booking", emoji: "🚨" },
+  UNKNOWN:  { bg: "#f3f4f6", text: "#6b7280", border: "#d1d5db", label: "Insufficient Information",       emoji: "⚪" },
 };
 
 const TRANSP_COLOURS: Record<string, { bg: string; text: string; border: string; label: string }> = {
@@ -65,12 +65,12 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
     <div className="animate-fade-in">
 
       {/* Action bar */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" as const }}>
-        <button onClick={downloadReport} style={{ background: "#1a1a2e", color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-          📄 Download Report
+      <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" as const }}>
+        <button onClick={downloadReport} style={{ background: "#e63946", color: "#fff", border: "none", borderRadius: 8, padding: "11px 22px", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
+          📄 Download Full Report
         </button>
         {complaintLetter && (
-          <button onClick={() => setShowLetter(!showLetter)} style={{ background: "#e63946", color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          <button onClick={() => setShowLetter(!showLetter)} style={{ background: "#1a1a2e", color: "#fff", border: "none", borderRadius: 8, padding: "11px 22px", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
             ✉️ {showLetter ? "Hide" : "View"} Complaint Letter
           </button>
         )}
@@ -78,18 +78,31 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
 
       {/* Layer 1: Risk banner */}
       <SectionLabel>Layer 1 — Booking Terms Analysis</SectionLabel>
-      <div style={{ background: rc.bg, border: `2px solid ${rc.border}`, borderRadius: 12, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: rc.text, marginBottom: 5 }}>{rc.label}</div>
-          <p style={{ margin: 0, fontSize: 14, color: "#1f2937", lineHeight: 1.55 }}>{terms.summary}</p>
-          {terms.topWarning && (
-            <p style={{ margin: "8px 0 0", fontSize: 13, fontWeight: 600, color: rc.text }}>⚡ {terms.topWarning}</p>
+      <div style={{ background: rc.bg, border: `2px solid ${rc.border}`, borderRadius: 12, padding: "20px", marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: terms.riskScore != null ? 14 : 0 }}>
+          <span style={{ fontSize: 40, flexShrink: 0, lineHeight: 1 }}>{rc.emoji}</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: rc.text, marginBottom: 4 }}>{rc.label}</div>
+            <p style={{ margin: 0, fontSize: 14, color: "#1f2937", lineHeight: 1.55 }}>{terms.summary}</p>
+            {terms.topWarning && (
+              <p style={{ margin: "8px 0 0", fontSize: 13, fontWeight: 600, color: rc.text }}>⚡ {terms.topWarning}</p>
+            )}
+          </div>
+          {terms.riskScore != null && (
+            <div style={{ textAlign: "center" as const, flexShrink: 0 }}>
+              <div style={{ fontSize: 40, fontWeight: 900, color: rc.text, lineHeight: 1 }}>{terms.riskScore}</div>
+              <div style={{ fontSize: 10, color: rc.text, fontWeight: 700, textTransform: "uppercase" as const, marginTop: 2 }}>/ 100</div>
+            </div>
           )}
         </div>
         {terms.riskScore != null && (
-          <div style={{ textAlign: "center" as const, flexShrink: 0, marginLeft: 20 }}>
-            <div style={{ fontSize: 38, fontWeight: 900, color: rc.text, lineHeight: 1 }}>{terms.riskScore}</div>
-            <div style={{ fontSize: 10, color: rc.text, fontWeight: 700, textTransform: "uppercase" as const, marginTop: 2 }}>Risk Score</div>
+          <div>
+            <div style={{ height: 8, background: "rgba(0,0,0,0.08)", borderRadius: 4, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${terms.riskScore}%`, background: rc.text, borderRadius: 4 }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: rc.text, marginTop: 3, opacity: 0.7 }}>
+              <span>Low risk</span><span>High risk</span>
+            </div>
           </div>
         )}
       </div>
@@ -97,7 +110,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
       {/* Flags */}
       {terms.flags.length > 0 && (
         <>
-          <SectionLabel>Restrictions Found ({terms.flags.length})</SectionLabel>
+          <SectionLabel>🔍 Restrictions Found ({terms.flags.length})</SectionLabel>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
             {terms.flags.map((flag, i) => <FlagCard key={i} flag={flag} />)}
           </div>
@@ -123,12 +136,12 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
 
           {booking.hidden.length > 0 && (
             <>
-              <SectionLabel>Hidden Before Payment ({booking.hidden.length})</SectionLabel>
+              <SectionLabel>👁️ Hidden Before Payment ({booking.hidden.length})</SectionLabel>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
                 {booking.hidden.map((h, i) => (
-                  <div key={i} style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderRadius: 10, padding: "12px 16px" }}>
+                  <div key={i} style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #e63946", borderRadius: 10, padding: "12px 16px" }}>
                     <div style={{ display: "flex", gap: 10 }}>
-                      <span style={{ fontSize: 16 }}>🚫</span>
+                      <span style={{ fontSize: 20 }}>🚫</span>
                       <div>
                         <div style={{ fontSize: 13, fontWeight: 700, color: "#881337", marginBottom: 3 }}>{h.item}</div>
                         <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.5 }}>{h.concern}</p>
@@ -142,10 +155,10 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
 
           {booking.disclosed.length > 0 && (
             <>
-              <SectionLabel>Disclosed on Booking Page ({booking.disclosed.length})</SectionLabel>
+              <SectionLabel>✅ Disclosed on Booking Page ({booking.disclosed.length})</SectionLabel>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
                 {booking.disclosed.map((d, i) => (
-                  <div key={i} style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 10, padding: "10px 16px", display: "flex", gap: 10, alignItems: "center" }}>
+                  <div key={i} style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderLeft: "4px solid #16a34a", borderRadius: 10, padding: "10px 16px", display: "flex", gap: 10, alignItems: "center" }}>
                     <span>✅</span>
                     <div>
                       <span style={{ fontSize: 13, fontWeight: 600, color: "#14532d" }}>{d.item}</span>
@@ -177,13 +190,19 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
       {/* Complaint letter */}
       {complaintLetter && showLetter && (
         <div style={{ marginTop: 20 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <SectionLabel>Draft Complaint Letter</SectionLabel>
-            <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 600, color: "#e63946", background: "none", border: "none", cursor: "pointer" }}>
-              {copied ? "✓ Copied!" : "Copy to clipboard"}
+          <div style={{ background: "#1a1a2e", borderRadius: "10px 10px 0 0", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 22 }}>✉️</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>Draft Complaint Letter</div>
+                <div style={{ fontSize: 11, color: "#94a3b8" }}>Fill in the [PLACEHOLDER] fields before sending</div>
+              </div>
+            </div>
+            <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 700, color: "#e63946", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 6, padding: "6px 14px", cursor: "pointer" }}>
+              {copied ? "✓ Copied!" : "Copy"}
             </button>
           </div>
-          <div style={{ background: "#f8f7f4", border: "1px solid #e2e8f0", borderRadius: 10, padding: "20px", fontSize: 13, lineHeight: 1.8, whiteSpace: "pre-wrap" as const, fontFamily: "Georgia, serif", color: "#1f2937" }}>
+          <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "24px 28px", fontSize: 13, lineHeight: 1.9, whiteSpace: "pre-wrap" as const, fontFamily: "Georgia, 'Times New Roman', serif", color: "#1f2937", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}>
             {complaintLetter}
           </div>
         </div>
