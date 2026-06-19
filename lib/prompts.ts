@@ -17,14 +17,14 @@ Respond ONLY with valid JSON. No markdown, no backticks, no preamble.
 {
   "riskScore": <integer 0-100>,
   "riskLevel": <"LOW"|"MEDIUM"|"HIGH"|"CRITICAL">,
-  "summary": "<2 plain-English sentences>",
+  "summary": "<1-2 short sentences>",
   "topWarning": "<single most critical thing consumer must know>",
   "flags": [
     {
       "severity": <"green"|"amber"|"red">,
       "category": "<short category>",
       "title": "<plain English title>",
-      "detail": "<what this means for consumer, 1-2 sentences>",
+      "detail": "<what this means for consumer, 1 concise sentence>",
       "quote": "<exact short phrase from text or null>"
     }
   ]
@@ -50,7 +50,7 @@ Respond ONLY with valid JSON. No markdown, no backticks.
 {
   "transparencyScore": <integer 0-100, 100 = fully transparent>,
   "transparencyLevel": <"TRANSPARENT"|"PARTIAL"|"POOR"|"MISLEADING">,
-  "summary": "<2 sentences on how well restrictions were disclosed>",
+  "summary": "<1-2 short sentences on how well restrictions were disclosed>",
   "disclosed": [
     { "item": "<restriction>", "howShown": "<how prominently shown>" }
   ],
