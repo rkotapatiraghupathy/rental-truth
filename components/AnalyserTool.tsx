@@ -44,7 +44,7 @@ export default function AnalyserTool() {
   }
 
   async function analyse() {
-    if (!termsText.trim()) return;
+    if (!termsText.trim() && !bookingText.trim()) return;
     setLoading(true);
     setResult(null);
     setError(null);
@@ -129,11 +129,11 @@ export default function AnalyserTool() {
           </span>
           <button
             onClick={analyse}
-            disabled={loading || !termsText.trim()}
+            disabled={loading || (!termsText.trim() && !bookingText.trim())}
             style={{
-              background: loading || !termsText.trim() ? "#d1d5db" : "#e63946",
+              background: loading || (!termsText.trim() && !bookingText.trim()) ? "#d1d5db" : "#e63946",
               color: "#fff", border: "none", borderRadius: 8, padding: "11px 28px",
-              fontWeight: 700, fontSize: 14, cursor: loading || !termsText.trim() ? "not-allowed" : "pointer",
+              fontWeight: 700, fontSize: 14, cursor: loading || (!termsText.trim() && !bookingText.trim()) ? "not-allowed" : "pointer",
             }}
           >
             {loading ? "Analysing…" : "Analyse Booking"}

@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { termsText, bookingPageText } = body;
 
-    if (!termsText?.trim()) {
+    if (!termsText?.trim() && !bookingPageText?.trim()) {
       return NextResponse.json({ error: "No terms text provided" }, { status: 400 });
     }
 
