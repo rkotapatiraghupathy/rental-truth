@@ -18,8 +18,7 @@ export default function Home() {
           <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
             <a href="#problem" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>The Problem</a>
             <a href="#tool" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>Try It</a>
-            <a href="#vision" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>Vision</a>
-            <a href="#waitlist" style={{ background: "#e63946", color: "#fff", fontSize: 13, fontWeight: 600, padding: "7px 16px", borderRadius: 7, textDecoration: "none" }}>Get Early Access</a>
+<a href="#waitlist" style={{ background: "#e63946", color: "#fff", fontSize: 13, fontWeight: 600, padding: "7px 16px", borderRadius: 7, textDecoration: "none" }}>Get Early Access</a>
           </div>
         </div>
       </nav>
@@ -40,9 +39,6 @@ export default function Home() {
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#tool" style={{ background: "#e63946", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 30px", borderRadius: 9, textDecoration: "none" }}>
               Analyse My Booking →
-            </a>
-            <a href="#vision" style={{ background: "transparent", color: "#94a3b8", fontWeight: 600, fontSize: 15, padding: "14px 24px", borderRadius: 9, textDecoration: "none", border: "1.5px solid #2d3748" }}>
-              See the vision
             </a>
           </div>
         </div>
@@ -159,62 +155,7 @@ export default function Home() {
           <AnalyserTool />
         </section>
 
-        {/* Vision / roadmap */}
-        <section id="vision" style={{ padding: "52px 0 0" }}>
-          <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 14, padding: "32px 36px" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#e63946", marginBottom: 12 }}>Product Roadmap</div>
-            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", margin: "0 0 24px" }}>
-              Starting with car hire. Expanding to all of travel.
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-              {[
-                {
-                  phase: "Phase 1 — Now",
-                  color: "#e63946",
-                  items: [
-                    "RentalTruth AI analyser",
-                    "Two-layer terms analysis",
-                    "Auto-generated complaint letters",
-                    "Car hire transparency reports",
-                  ]
-                },
-                {
-                  phase: "Phase 2 — 2026",
-                  color: "#d97706",
-                  items: [
-                    "URL & screenshot analysis",
-                    "Hotels & flights coverage",
-                    "Transparency scoring database",
-                    "Corporate travel compliance",
-                  ]
-                },
-                {
-                  phase: "Phase 3 — 2027",
-                  color: "#16a34a",
-                  items: [
-                    "FairBooking platform launch",
-                    "Direct supplier integrations",
-                    "Data licensing to insurers",
-                    "Acquisition / Series A",
-                  ]
-                },
-              ].map(({ phase, color, items }) => (
-                <div key={phase} style={{ background: "#f8f7f4", borderRadius: 10, padding: "18px 16px" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>{phase}</div>
-                  <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                    {items.map(item => (
-                      <li key={item} style={{ fontSize: 13, color: "#374151", padding: "5px 0", borderBottom: "1px solid #e2e8f0", display: "flex", gap: 8, alignItems: "center" }}>
-                        <span style={{ color, fontWeight: 700, fontSize: 16 }}>·</span> {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Waitlist */}
+{/* Waitlist */}
         <section id="waitlist" style={{ padding: "52px 0" }}>
           <div style={{ background: "#1a1a2e", borderRadius: 14, padding: "40px 36px", textAlign: "center" }}>
             <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#e63946", marginBottom: 12 }}>Coming Soon</div>
