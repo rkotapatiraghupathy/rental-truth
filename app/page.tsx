@@ -20,7 +20,6 @@ const STEPS = [
 ];
 
 const STATS = [
-  { stat: "£28bn",   label: "Global car hire market" },
   { stat: "1 in 8",  label: "Customers face surprise restrictions" },
   { stat: "AI",      label: "Instant fine-print analysis" },
   { stat: "Free",    label: "Always free for consumers" },
@@ -43,7 +42,6 @@ export default function Home() {
           <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
             <a href="#problem" style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>The Problem</a>
             <a href="#tool"    style={{ color: "#94a3b8", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>Try It</a>
-            <a href="#waitlist" style={{ background: "#e63946", color: "#fff", fontSize: 13, fontWeight: 700, padding: "8px 18px", borderRadius: 8, textDecoration: "none" }}>Get Early Access</a>
           </div>
         </div>
       </nav>
@@ -181,23 +179,6 @@ export default function Home() {
           <AnalyserTool />
         </section>
 
-        {/* Waitlist */}
-        <section id="waitlist" style={{ padding: "80px 0" }}>
-          <div style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #0d0d1e 100%)", borderRadius: 18, padding: "56px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-            <div aria-hidden="true" style={{ position: "absolute", top: -80, right: -80, width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle, rgba(230,57,70,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em", color: "#e63946", marginBottom: 16 }}>Coming Soon</div>
-            <h2 style={{ fontSize: "clamp(20px, 3vw, 30px)", fontWeight: 900, color: "#fff", margin: "0 0 14px", letterSpacing: "-0.5px" }}>
-              FairBooking — book with full transparency
-            </h2>
-            <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.7, margin: "0 0 36px", maxWidth: 500, marginLeft: "auto", marginRight: "auto" }}>
-              A booking platform where every restriction is shown in plain English before you pay. No surprises. No fine-print traps. No desk denials.
-            </p>
-            <div style={{ maxWidth: 440, margin: "0 auto", position: "relative" }}>
-              <WaitlistSignup compact />
-            </div>
-            <p style={{ fontSize: 11, color: "#334155", margin: "16px 0 0" }}>Join the waitlist. One email when we launch. No spam.</p>
-          </div>
-        </section>
 
       </div>
 
