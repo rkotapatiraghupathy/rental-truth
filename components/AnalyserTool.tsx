@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { AnalysisResult } from "@/lib/types";
 import AnalysisResults from "./AnalysisResults";
 
@@ -35,8 +35,15 @@ export default function AnalyserTool() {
   const [termsText, setTermsText] = useState("");
   const [bookingText, setBookingText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [dotCount, setDotCount] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+
+  useEffect(() => {
+    if (!loading) { setDotCount(1); return; }
+    const id = setInterval(() => setDotCount(d => d === 3 ? 1 : d + 1), 500);
+    return () => clearInterval(id);
+  }, [loading]);
 
   function loadExample() {
     setTermsText(SAMPLE_TERMS);
@@ -63,28 +70,34 @@ export default function AnalyserTool() {
     setLoading(false);
   }
 
-  const tabStyle = (tab: string) => ({
-    padding: "10px 18px",
-    fontSize: 13,
-    fontWeight: 600 as const,
+  const hasInput = !!(termsText.trim() || bookingText.trim());
+  const isDisabled = loading || !hasInput;
+  const loadingLabel = "Analysing" + ".".repeat(dotCount);
+
+  const tabStyle = (tab: string): React.CSSProperties => ({
+    padding: "14px 24px",
+    fontSize: 14,
+    fontWeight: 600,
     border: "none",
-    borderBottom: activeTab === tab ? "2px solid #e63946" : "2px solid transparent",
+    borderBottom: activeTab === tab ? "3px solid #e63946" : "3px solid transparent",
     background: "none",
     cursor: "pointer",
-    color: activeTab === tab ? "#e63946" : "#6b7280",
+    color: activeTab === tab ? "#fff" : "#64748b",
+    transition: "color 0.15s ease",
   });
 
   return (
     <div>
       {/* Input card */}
-      <div style={{ background: "#fff", borderRadius: 12, border: "1.5px solid #e2e8f0", overflow: "hidden", marginBottom: 24 }}>
+      <div style={{ background: "#fff", borderRadius: 14, border: "1.5px solid #e2e8f0", overflow: "hidden", marginBottom: 28 }}>
+
         {/* Tabs */}
-        <div style={{ display: "flex", borderBottom: "1px solid #f1f5f9", padding: "0 8px" }}>
+        <div style={{ display: "flex", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0 12px", background: "#1a1a2e" }}>
           <button style={tabStyle("terms")} onClick={() => setActiveTab("terms")}>
             📄 Booking Terms
           </button>
           <button style={tabStyle("booking")} onClick={() => setActiveTab("booking")}>
-            🌐 Booking Page <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 400 }}>(optional)</span>
+            🌐 Booking Page&nbsp;<span style={{ fontSize: 11, color: "#475569", fontWeight: 400 }}>(optional)</span>
           </button>
         </div>
 
@@ -94,61 +107,69 @@ export default function AnalyserTool() {
               value={termsText}
               onChange={e => setTermsText(e.target.value)}
               placeholder="Paste your booking confirmation email, rental T&Cs, or any car hire contract text here…"
-              style={{ width: "100%", minHeight: 220, padding: "16px 18px", border: "none", outline: "none", fontFamily: "inherit", fontSize: 13, lineHeight: 1.65, color: "#1f2937", resize: "vertical" as const, boxSizing: "border-box" as const }}
+              style={{ width: "100%", minHeight: 260, padding: "22px 24px", border: "none", outline: "none", fontFamily: "inherit", fontSize: 14, lineHeight: 1.7, color: "#1f2937", resize: "vertical" as const, boxSizing: "border-box" as const }}
             />
-            <div style={{ padding: "8px 18px", borderTop: "1px solid #f1f5f9" }}>
-              <span style={{ fontSize: 11, color: "#9ca3af" }}>{termsText.length} characters</span>
+            <div style={{ padding: "10px 24px", borderTop: "1px solid #f1f5f9" }}>
+              <span style={{ fontSize: 11, color: "#9ca3af" }}>{termsText.length.toLocaleString()} characters</span>
             </div>
           </div>
         )}
 
         {activeTab === "booking" && (
           <div>
-            <div style={{ padding: "12px 18px 0", fontSize: 12, color: "#6b7280", lineHeight: 1.6 }}>
-              Paste what you saw on the booking/checkout page before clicking &ldquo;Pay&rdquo; — price displayed, any visible warnings, and any terms shown. This lets us check whether critical restrictions were disclosed before payment.
+            <div style={{ padding: "18px 24px 0", fontSize: 13, color: "#6b7280", lineHeight: 1.65 }}>
+              Paste what you saw on the booking/checkout page before clicking &ldquo;Pay&rdquo; — price, visible warnings, any terms shown. This lets us check whether restrictions were disclosed before payment.
             </div>
             <textarea
               value={bookingText}
               onChange={e => setBookingText(e.target.value)}
               placeholder="Paste the booking page content — price, visible terms, warnings shown before payment…"
-              style={{ width: "100%", minHeight: 200, padding: "12px 18px", border: "none", outline: "none", fontFamily: "inherit", fontSize: 13, lineHeight: 1.65, color: "#1f2937", resize: "vertical" as const, boxSizing: "border-box" as const }}
+              style={{ width: "100%", minHeight: 240, padding: "14px 24px", border: "none", outline: "none", fontFamily: "inherit", fontSize: 14, lineHeight: 1.7, color: "#1f2937", resize: "vertical" as const, boxSizing: "border-box" as const }}
             />
-            <div style={{ padding: "8px 18px", borderTop: "1px solid #f1f5f9" }}>
-              <span style={{ fontSize: 11, color: "#9ca3af" }}>{bookingText.length} characters</span>
+            <div style={{ padding: "10px 24px", borderTop: "1px solid #f1f5f9" }}>
+              <span style={{ fontSize: 11, color: "#9ca3af" }}>{bookingText.length.toLocaleString()} characters</span>
             </div>
           </div>
         )}
 
-        {/* Footer */}
-        <div style={{ padding: "12px 18px", background: "#f8f9fb", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 12, color: "#9ca3af" }}>
-            {bookingText.trim() ? "✓ Will analyse both layers" : "Add booking page text for full disclosure analysis"}
-          </span>
+        {/* Action footer */}
+        <div style={{ padding: "18px 24px", background: "#f8f9fb", borderTop: "1px solid #f1f5f9" }}>
+          <p style={{ margin: "0 0 14px", fontSize: 12, color: "#9ca3af" }}>
+            {bookingText.trim() ? "✓ Will analyse both layers — terms + disclosure check" : "Add booking page text for the full two-layer analysis"}
+          </p>
           <button
             onClick={analyse}
-            disabled={loading || (!termsText.trim() && !bookingText.trim())}
+            disabled={isDisabled}
+            className={hasInput && !loading ? "btn-pulse" : ""}
             style={{
-              background: loading || (!termsText.trim() && !bookingText.trim()) ? "#d1d5db" : "#e63946",
-              color: "#fff", border: "none", borderRadius: 8, padding: "11px 28px",
-              fontWeight: 700, fontSize: 14, cursor: loading || (!termsText.trim() && !bookingText.trim()) ? "not-allowed" : "pointer",
+              width: "100%",
+              background: isDisabled ? "#d1d5db" : "#e63946",
+              color: "#fff",
+              border: "none",
+              borderRadius: 10,
+              padding: "16px 32px",
+              fontWeight: 800,
+              fontSize: 17,
+              cursor: isDisabled ? "not-allowed" : "pointer",
+              letterSpacing: "-0.2px",
             }}
           >
-            {loading ? "Analysing…" : "Analyse Booking"}
+            {loading ? loadingLabel : "Analyse Booking →"}
           </button>
         </div>
       </div>
 
       {error && (
-        <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: 8, padding: "12px 16px", color: "#881337", fontSize: 13, marginBottom: 16 }}>
+        <div style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #e63946", borderRadius: 10, padding: "14px 18px", color: "#881337", fontSize: 13, marginBottom: 16 }}>
           {error}
         </div>
       )}
 
       {loading && (
-        <div style={{ textAlign: "center" as const, padding: "56px 0", color: "#6b7280" }}>
-          <div style={{ fontSize: 40, marginBottom: 14 }}>🔍</div>
-          <p style={{ fontSize: 15, fontWeight: 600, margin: "0 0 6px", color: "#374151" }}>Reading the fine print so you don&apos;t have to…</p>
-          <p style={{ fontSize: 13, margin: 0 }}>This usually takes 10–20 seconds</p>
+        <div style={{ textAlign: "center" as const, padding: "72px 0", color: "#6b7280" }}>
+          <div style={{ fontSize: 52, marginBottom: 18 }}>🔍</div>
+          <p style={{ fontSize: 17, fontWeight: 700, margin: "0 0 8px", color: "#374151" }}>Reading the fine print so you don&apos;t have to…</p>
+          <p style={{ fontSize: 14, margin: 0, color: "#9ca3af" }}>This usually takes 10–20 seconds</p>
         </div>
       )}
 

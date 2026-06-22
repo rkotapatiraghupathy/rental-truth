@@ -10,18 +10,72 @@
 html { scroll-behavior: smooth; }
 body { background: #f8f7f4; }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-in-out;
-}
+/* ── Fade in ── */
+.animate-fade-in { animation: fadeIn 0.4s ease-in-out; }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.hover-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
-.hover-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+/* ── Hero glow orb ── */
+.hero-glow-orb {
+  position: absolute;
+  top: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(230,57,70,0.2) 0%, transparent 65%);
+  animation: glow-pulse 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+  50%       { opacity: 1;   transform: translateX(-50%) scale(1.1); }
+}
 
+/* ── Card hovers ── */
+.hover-card        { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.hover-card:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+
+.hover-card-strong        { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.hover-card-strong:hover  { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.14); }
+
+/* ── Flag pulse animations ── */
+@keyframes pulse-red {
+  0%, 100% { border-left-color: #e63946; }
+  50%       { border-left-color: rgba(230,57,70,0.3); }
+}
+@keyframes pulse-amber {
+  0%, 100% { border-left-color: #f59e0b; }
+  50%       { border-left-color: rgba(245,158,11,0.3); }
+}
+@keyframes pulse-green {
+  0%, 100% { border-left-color: #16a34a; }
+  50%       { border-left-color: rgba(22,163,74,0.3); }
+}
+.flag-pulse-red   { animation: pulse-red   2.5s ease-in-out infinite; }
+.flag-pulse-amber { animation: pulse-amber 2.5s ease-in-out infinite; }
+.flag-pulse-green { animation: pulse-green 2.5s ease-in-out infinite; }
+
+/* ── Analyse button pulse ── */
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 4px 14px rgba(230,57,70,0.4); }
+  50%       { box-shadow: 0 4px 32px rgba(230,57,70,0.75); }
+}
+.btn-pulse { animation: btn-glow 1.8s ease-in-out infinite; }
+
+/* ── Mobile floating CTA ── */
+.mobile-cta-btn { display: none; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .mobile-cta-btn     { display: flex !important; }
+  .timeline-arrow     { display: none !important; }
+  .timeline-steps     { flex-direction: column !important; gap: 24px !important; }
+  .timeline-steps > * { width: 100% !important; flex: none !important; }
+}
 @media (max-width: 640px) {
-  .stats-bar-inner { gap: 20px !important; }
-  .founder-inner { grid-template-columns: 1fr !important; }
+  .stats-bar-inner  { gap: 12px !important; }
+  .founder-inner    { grid-template-columns: 1fr !important; }
 }
