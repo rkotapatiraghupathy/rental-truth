@@ -7,6 +7,10 @@ export interface Flag {
   category: string;
   title: string;
   detail: string;
+  harmLikelihood?: number;
+  worstCase?: string;
+  industryContext?: string;
+  consumerAction?: string;
   quote: string | null;
 }
 
@@ -15,6 +19,7 @@ export interface TermsResult {
   riskLevel: RiskLevel;
   summary: string;
   topWarning: string | null;
+  benchmarkContext?: string;
   flags: Flag[];
 }
 

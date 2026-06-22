@@ -21,6 +21,24 @@ export default function FlagCard({ flag }: { flag: Flag }) {
             </span>
           </div>
           <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.6 }}>{flag.detail}</p>
+          {flag.worstCase && (
+            <div style={{ display: "flex", gap: 6, marginTop: 8, fontSize: 12, color: "#881337", lineHeight: 1.5, alignItems: "flex-start" }}>
+              <span style={{ flexShrink: 0 }}>⚠️</span>
+              <span><strong>Worst case:</strong> {flag.worstCase}</span>
+            </div>
+          )}
+          {flag.industryContext && (
+            <div style={{ display: "flex", gap: 6, marginTop: 5, fontSize: 12, color: "#64748b", lineHeight: 1.5, alignItems: "flex-start" }}>
+              <span style={{ flexShrink: 0 }}>📊</span>
+              <span><strong>Industry:</strong> {flag.industryContext}</span>
+            </div>
+          )}
+          {flag.consumerAction && (
+            <div style={{ display: "flex", gap: 6, marginTop: 5, fontSize: 12, color: "#1e40af", lineHeight: 1.5, alignItems: "flex-start" }}>
+              <span style={{ flexShrink: 0 }}>✅</span>
+              <span><strong>What to do:</strong> {flag.consumerAction}</span>
+            </div>
+          )}
           {flag.quote && (
             <blockquote style={{ margin: "10px 0 0", padding: "10px 14px 10px 28px", background: "rgba(255,255,255,0.7)", borderRadius: 8, borderLeft: `3px solid ${c.leftBorder}`, position: "relative" }}>
               <span style={{ position: "absolute", top: 0, left: 8, fontSize: 36, color: c.leftBorder, opacity: 0.35, lineHeight: 1, fontFamily: "Georgia, serif", userSelect: "none" }}>&ldquo;</span>

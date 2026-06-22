@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
       riskLevel: rawTerms.riskLevel ?? "UNKNOWN",
       summary: rawTerms.summary ?? "",
       topWarning: rawTerms.topWarning ?? null,
+      benchmarkContext: rawTerms.benchmarkContext ?? undefined,
       flags: rawTerms.flags ?? [],
     };
 

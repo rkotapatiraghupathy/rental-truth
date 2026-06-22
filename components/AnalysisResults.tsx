@@ -114,6 +114,25 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
         </div>
       )}
 
+      {/* Financial Risk Exposure */}
+      {terms.flags.some(f => f.worstCase) && (
+        <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderLeft: "4px solid #e63946", borderRadius: 12, padding: "18px 20px", marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#e63946", marginBottom: 12 }}>
+            💸 Financial Risk Exposure
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            {terms.flags.filter(f => f.worstCase).map((f, i) => (
+              <div key={i} style={{ display: "flex", gap: 8, fontSize: 13, alignItems: "flex-start" }}>
+                <span style={{ flexShrink: 0 }}>{f.severity === "red" ? "🚫" : f.severity === "amber" ? "⚠️" : "✅"}</span>
+                <span style={{ color: "#374151", lineHeight: 1.5 }}>
+                  <strong style={{ color: "#1a1a2e" }}>{f.title}:</strong> {f.worstCase}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Action bar */}
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" as const }}>
         <button onClick={downloadReport} style={{ background: "#e63946", color: "#fff", border: "none", borderRadius: 10, padding: "13px 24px", fontSize: 15, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 14px rgba(230,57,70,0.35)" }}>
@@ -144,6 +163,11 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
             {terms.topWarning && (
               <p style={{ margin: "12px 0 0", fontSize: 13, fontWeight: 700, color: rc.text, padding: "8px 14px", background: "rgba(0,0,0,0.05)", borderRadius: 8, borderLeft: `3px solid ${rc.text}` }}>
                 ⚡ {terms.topWarning}
+              </p>
+            )}
+            {terms.benchmarkContext && (
+              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#6b7280", fontStyle: "italic", lineHeight: 1.55 }}>
+                📊 {terms.benchmarkContext}
               </p>
             )}
           </div>
