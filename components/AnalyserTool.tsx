@@ -79,7 +79,7 @@ export default function AnalyserTool() {
     fontSize: 14,
     fontWeight: 600,
     border: "none",
-    borderBottom: activeTab === tab ? "3px solid #e63946" : "3px solid transparent",
+    borderBottom: activeTab === tab ? "3px solid #c0303c" : "3px solid transparent",
     background: "none",
     cursor: "pointer",
     color: activeTab === tab ? "#fff" : "#64748b",
@@ -143,7 +143,7 @@ export default function AnalyserTool() {
             className={hasInput && !loading ? "btn-pulse" : ""}
             style={{
               width: "100%",
-              background: isDisabled ? "#d1d5db" : "#e63946",
+              background: isDisabled ? "#d1d5db" : "#c0303c",
               color: "#fff",
               border: "none",
               borderRadius: 10,
@@ -160,7 +160,7 @@ export default function AnalyserTool() {
       </div>
 
       {error && (
-        <div style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #e63946", borderRadius: 10, padding: "14px 18px", color: "#881337", fontSize: 13, marginBottom: 16 }}>
+        <div style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #c0303c", borderRadius: 10, padding: "14px 18px", color: "#881337", fontSize: 13, marginBottom: 16 }}>
           {error}
         </div>
       )}
