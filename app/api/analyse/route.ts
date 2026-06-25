@@ -8,7 +8,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 async function callClaude(systemPrompt: string, userContent: string): Promise<unknown> {
   const message = await client.messages.create({
     model: "claude-sonnet-4-6",
-    max_tokens: 4000,
+    max_tokens: 6000,
     system: systemPrompt,
     messages: [{ role: "user", content: userContent }],
   });
@@ -75,9 +75,15 @@ export async function POST(request: NextRequest) {
     const termsResult: TermsResult = {
       riskScore: rawTerms.riskScore ?? null,
       riskLevel: rawTerms.riskLevel ?? "UNKNOWN",
+      verdict: rawTerms.verdict ?? "",
       summary: rawTerms.summary ?? "",
       topWarning: rawTerms.topWarning ?? null,
-      benchmarkContext: rawTerms.benchmarkContext ?? undefined,
+      benchmarkContext: rawTerms.benchmarkContext ?? null,
+      advertisedPrice: rawTerms.advertisedPrice ?? null,
+      estimatedTrueCost: rawTerms.estimatedTrueCost ?? null,
+      hiddenCostBreakdown: rawTerms.hiddenCostBreakdown ?? [],
+      goNoGoChecklist: rawTerms.goNoGoChecklist ?? [],
+      deskSurvivalKit: rawTerms.deskSurvivalKit ?? [],
       flags: rawTerms.flags ?? [],
     };
 

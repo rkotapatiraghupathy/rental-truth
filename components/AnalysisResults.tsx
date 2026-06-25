@@ -18,9 +18,23 @@ const TRANSP_COLOURS: Record<string, { bg: string; text: string; border: string;
   MISLEADING:  { bg: "#ffebee", text: "#b71c1c", border: "#ef9a9a", label: "Misleading — Key Terms Hidden" },
 };
 
+const LIKELIHOOD_STYLE: Record<string, { bg: string; text: string; label: string }> = {
+  certain:  { bg: "#fee2e2", text: "#881337", label: "Certain" },
+  likely:   { bg: "#fef3c7", text: "#92400e", label: "Likely" },
+  possible: { bg: "#f1f5f9", text: "#475569", label: "Possible" },
+};
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em", color: "#6b7280", margin: "28px 0 12px" }}>
+      {children}
+    </div>
+  );
+}
+
+function SectionHeader({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", margin: "28px 0 14px", letterSpacing: "-0.2px" }}>
       {children}
     </div>
   );
@@ -50,9 +64,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
   const rc = RISK_COLOURS[terms.riskLevel] || RISK_COLOURS.UNKNOWN;
   const tc = booking ? (TRANSP_COLOURS[booking.transparencyLevel] || TRANSP_COLOURS.POOR) : null;
 
-  const redFlags   = terms.flags.filter(f => f.severity === "red");
-  const amberFlags = terms.flags.filter(f => f.severity === "amber");
-  const greenFlags = terms.flags.filter(f => f.severity === "green");
+  const redFlags = terms.flags.filter(f => f.severity === "red");
   const hasGap = booking && booking.hidden.length > 0 && redFlags.length > 0;
 
   const letterDate = new Date(analysedAt).toLocaleDateString("en-GB", {
@@ -83,57 +95,131 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
     }
   }
 
+  function printLetter() {
+    if (!complaintLetter) return;
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`<!DOCTYPE html><html><head><title>Complaint Letter — RentalTruth</title>
+      <style>
+        body { font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.9; max-width: 680px; margin: 48px auto; padding: 0 32px; color: #1f2937; }
+        pre { white-space: pre-wrap; font-family: inherit; }
+        h2 { font-family: system-ui, sans-serif; }
+        p.meta { font-family: system-ui, sans-serif; font-size: 12px; color: #6b7280; margin: 0 0 32px; }
+        hr { border: none; border-top: 1px solid #e2e8f0; margin-bottom: 32px; }
+        @media print { body { margin: 0; } }
+      </style></head><body>
+      <h2>RentalTruth — Draft Complaint Letter</h2>
+      <p class="meta">Generated ${letterDate} · Fill in [PLACEHOLDER] fields before sending</p>
+      <hr/>
+      <pre>${complaintLetter.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre>
+    </body></html>`);
+    w.document.close();
+    w.print();
+  }
+
   return (
     <div className="animate-fade-in">
 
-      {/* Summary counts card */}
-      {terms.flags.length > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" as const, padding: "16px 20px", background: "#1a1a2e", borderRadius: 12, marginBottom: 20 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#94a3b8", marginRight: 4 }}>Summary</span>
-          {redFlags.length > 0 && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 8, padding: "6px 12px" }}>
-              <span style={{ fontSize: 15 }}>🚫</span>
-              <span style={{ fontSize: 14, fontWeight: 800, color: "#e63946" }}>{redFlags.length}</span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>Critical</span>
+      {/* ── 1. VERDICT BANNER ── */}
+      <div style={{ background: rc.bg, border: `2px solid ${rc.border}`, borderRadius: 14, padding: "28px 32px", marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" as const }}>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <span style={{ fontSize: 48, lineHeight: 1, flexShrink: 0 }}>{rc.emoji}</span>
+              <div>
+                <div style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em", color: rc.text, marginBottom: 3 }}>RentalTruth Verdict</div>
+                <div style={{ fontSize: 20, fontWeight: 900, color: rc.text, lineHeight: 1.2, letterSpacing: "-0.3px" }}>
+                  {terms.verdict || rc.label}
+                </div>
+              </div>
             </div>
-          )}
-          {amberFlags.length > 0 && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 8, padding: "6px 12px" }}>
-              <span style={{ fontSize: 15 }}>⚠️</span>
-              <span style={{ fontSize: 14, fontWeight: 800, color: "#f59e0b" }}>{amberFlags.length}</span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>Warnings</span>
-            </div>
-          )}
-          {greenFlags.length > 0 && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(22,163,74,0.1)", border: "1px solid rgba(22,163,74,0.2)", borderRadius: 8, padding: "6px 12px" }}>
-              <span style={{ fontSize: 15 }}>✅</span>
-              <span style={{ fontSize: 14, fontWeight: 800, color: "#16a34a" }}>{greenFlags.length}</span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>OK</span>
+            <p style={{ margin: 0, fontSize: 14, color: "#1f2937", lineHeight: 1.65 }}>{terms.summary}</p>
+            {terms.topWarning && (
+              <p style={{ margin: "12px 0 0", fontSize: 13, fontWeight: 700, color: rc.text, padding: "9px 14px", background: "rgba(0,0,0,0.05)", borderRadius: 8, borderLeft: `3px solid ${rc.text}` }}>
+                ⚡ {terms.topWarning}
+              </p>
+            )}
+            {terms.benchmarkContext && (
+              <p style={{ margin: "8px 0 0", fontSize: 12, color: "#6b7280", fontStyle: "italic", lineHeight: 1.55 }}>
+                📊 {terms.benchmarkContext}
+              </p>
+            )}
+          </div>
+          {terms.riskScore != null && (
+            <div style={{ flexShrink: 0 }}>
+              <ScoreGauge score={terms.riskScore} color={rc.text} />
             </div>
           )}
         </div>
+      </div>
+
+      {/* ── 2. REAL COST CALCULATOR ── */}
+      {(terms.advertisedPrice != null || (terms.hiddenCostBreakdown ?? []).length > 0) && (
+        <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 12, overflow: "hidden", marginBottom: 20 }}>
+          <div style={{ padding: "14px 20px", background: "#1a1a2e", display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 16 }}>💰</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: "#fff", letterSpacing: "-0.1px" }}>Real Cost Calculator</span>
+            <span style={{ fontSize: 11, color: "#475569", marginLeft: 4 }}>— what this booking may actually cost you</span>
+          </div>
+          <div>
+            {terms.advertisedPrice != null && (
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 20px", borderBottom: "1px solid #f1f5f9" }}>
+                <span style={{ fontSize: 14, color: "#374151", fontWeight: 600 }}>Advertised price</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a" }}>£{terms.advertisedPrice.toFixed(2)}</span>
+              </div>
+            )}
+            {(terms.hiddenCostBreakdown ?? []).map((item, i) => {
+              const ls = LIKELIHOOD_STYLE[item.likelihood] || LIKELIHOOD_STYLE.possible;
+              return (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 20px", borderBottom: "1px solid #f1f5f9", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: ls.text, background: ls.bg, padding: "2px 7px", borderRadius: 20, textTransform: "uppercase" as const, letterSpacing: "0.04em", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
+                      {ls.label}
+                    </span>
+                    <span style={{ fontSize: 13, color: "#374151", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{item.item}</span>
+                  </div>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: item.likelihood === "certain" ? "#e63946" : item.likelihood === "likely" ? "#b45309" : "#6b7280", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
+                    + {item.estimatedAmount}
+                  </span>
+                </div>
+              );
+            })}
+            {terms.estimatedTrueCost != null && (
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", background: "#fff1f2", borderTop: "2px solid #fecdd3" }}>
+                <span style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e" }}>Estimated True Cost</span>
+                <span style={{ fontSize: 20, fontWeight: 900, color: "#e63946" }}>£{terms.estimatedTrueCost.toFixed(2)}</span>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
-      {/* Financial Risk Exposure */}
-      {terms.flags.some(f => f.worstCase) && (
-        <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderLeft: "4px solid #e63946", borderRadius: 12, padding: "18px 20px", marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#e63946", marginBottom: 12 }}>
-            💸 Financial Risk Exposure
-          </div>
+      {/* ── 3. GO/NO-GO CHECKLIST ── */}
+      {(terms.goNoGoChecklist ?? []).length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <SectionHeader>Should You Book This?</SectionHeader>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
-            {terms.flags.filter(f => f.worstCase).map((f, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, fontSize: 13, alignItems: "flex-start" }}>
-                <span style={{ flexShrink: 0 }}>{f.severity === "red" ? "🚫" : f.severity === "amber" ? "⚠️" : "✅"}</span>
-                <span style={{ color: "#374151", lineHeight: 1.5 }}>
-                  <strong style={{ color: "#1a1a2e" }}>{f.title}:</strong> {f.worstCase}
-                </span>
+            {(terms.goNoGoChecklist ?? []).map((check, i) => (
+              <div key={i} style={{
+                background: check.result ? "#f0fdf4" : "#fff1f2",
+                border: `1.5px solid ${check.result ? "#bbf7d0" : "#fecdd3"}`,
+                borderLeft: `4px solid ${check.result ? "#16a34a" : "#e63946"}`,
+                borderRadius: 10,
+                padding: "12px 16px",
+                display: "flex", gap: 12, alignItems: "flex-start",
+              }}>
+                <span style={{ fontSize: 22, flexShrink: 0, marginTop: 1 }}>{check.result ? "✅" : "❌"}</span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: check.result ? "#14532d" : "#881337" }}>{check.item}</div>
+                  <div style={{ fontSize: 12, color: "#6b7280", marginTop: 3, lineHeight: 1.55 }}>{check.detail}</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Action bar */}
+      {/* ── 4. ACTION BAR ── */}
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" as const }}>
         <button onClick={downloadReport} style={{ background: "#e63946", color: "#fff", border: "none", borderRadius: 10, padding: "13px 24px", fontSize: 15, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 14px rgba(230,57,70,0.35)" }}>
           📥 Download Full Report
@@ -145,36 +231,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
         )}
       </div>
 
-      {/* Layer 1: Risk banner with gauge */}
-      <SectionLabel>Layer 1 — Booking Terms Analysis</SectionLabel>
-      <div style={{ background: rc.bg, border: `2px solid ${rc.border}`, borderRadius: 14, padding: "24px 28px", marginBottom: 14 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" as const }}>
-          {terms.riskScore != null && (
-            <div style={{ flexShrink: 0 }}>
-              <ScoreGauge score={terms.riskScore} color={rc.text} />
-            </div>
-          )}
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-              <span style={{ fontSize: 36, lineHeight: 1 }}>{rc.emoji}</span>
-              <span style={{ fontSize: 16, fontWeight: 800, color: rc.text }}>{rc.label}</span>
-            </div>
-            <p style={{ margin: 0, fontSize: 14, color: "#1f2937", lineHeight: 1.65 }}>{terms.summary}</p>
-            {terms.topWarning && (
-              <p style={{ margin: "12px 0 0", fontSize: 13, fontWeight: 700, color: rc.text, padding: "8px 14px", background: "rgba(0,0,0,0.05)", borderRadius: 8, borderLeft: `3px solid ${rc.text}` }}>
-                ⚡ {terms.topWarning}
-              </p>
-            )}
-            {terms.benchmarkContext && (
-              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#6b7280", fontStyle: "italic", lineHeight: 1.55 }}>
-                📊 {terms.benchmarkContext}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Flags */}
+      {/* ── 5. FLAGS ── */}
       {terms.flags.length > 0 && (
         <>
           <SectionLabel>🔍 Restrictions Found ({terms.flags.length})</SectionLabel>
@@ -184,7 +241,23 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
         </>
       )}
 
-      {/* Layer 2: Booking page */}
+      {/* ── 6. DESK SURVIVAL KIT ── */}
+      {["MEDIUM", "HIGH", "CRITICAL"].includes(terms.riskLevel) && (terms.deskSurvivalKit ?? []).length > 0 && (
+        <div style={{ marginTop: 28 }}>
+          <SectionHeader>🧳 Desk Survival Kit — if you decide to go ahead</SectionHeader>
+          <p style={{ margin: "-10px 0 14px", fontSize: 12, color: "#6b7280" }}>Show this screen to the rental agent if challenged</p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            {(terms.deskSurvivalKit ?? []).map((tip, i) => (
+              <div key={i} style={{ background: "#1a1a2e", borderRadius: 10, padding: "14px 18px", display: "flex", gap: 16, alignItems: "flex-start" }}>
+                <span style={{ color: "#e63946", fontWeight: 900, fontSize: 18, flexShrink: 0, lineHeight: 1.4, minWidth: 20 }}>{i + 1}</span>
+                <span style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.65 }}>{tip}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── 7. LAYER 2: BOOKING PAGE TRANSPARENCY ── */}
       {booking && tc && (
         <>
           <SectionLabel>Layer 2 — Booking Page Transparency</SectionLabel>
@@ -239,7 +312,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
         </>
       )}
 
-      {/* Disclosure gap */}
+      {/* ── 8. DISCLOSURE GAP ── */}
       {hasGap && (
         <div style={{ background: "#fdf4ff", border: "2px solid #e879f9", borderRadius: 12, padding: "20px 24px", marginTop: 20 }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#86198f", marginBottom: 8 }}>
@@ -254,32 +327,33 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
         </div>
       )}
 
-      {/* Complaint letter — styled as actual letter */}
+      {/* ── 9. COMPLAINT LETTER ── */}
       {complaintLetter && showLetter && (
         <div style={{ marginTop: 24 }}>
-          {/* Letterhead */}
-          <div style={{ background: "#1a1a2e", borderRadius: "12px 12px 0 0", padding: "24px 32px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "3px solid #e63946" }}>
-            <div>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.5px" }}>
-                Rental<span style={{ color: "#e63946" }}>Truth</span>
+          <div style={{ background: "#1a1a2e", borderRadius: "12px 12px 0 0", padding: "20px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "3px solid #e63946" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 22 }}>✉️</span>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>Draft Complaint Letter</div>
+                <div style={{ fontSize: 11, color: "#475569" }}>Fill in the [PLACEHOLDER] fields before sending · {letterDate}</div>
               </div>
-              <div style={{ fontSize: 11, color: "#475569", marginTop: 3 }}>rentaltruth.co.uk · Consumer Protection Tool</div>
             </div>
-            <div style={{ textAlign: "right" as const }}>
-              <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>{letterDate}</div>
-              <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 700, color: "#e63946", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 6, padding: "6px 14px", cursor: "pointer" }}>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 700, color: "#e63946", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 6, padding: "7px 14px", cursor: "pointer" }}>
                 {copied ? "✓ Copied!" : "📋 Copy"}
+              </button>
+              <button onClick={printLetter} style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", background: "rgba(255,255,255,0.06)", border: "1px solid #2d3748", borderRadius: 6, padding: "7px 14px", cursor: "pointer" }}>
+                🖨️ Print / PDF
               </button>
             </div>
           </div>
-          {/* Letter body */}
           <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "32px 36px", fontSize: 14, lineHeight: 1.95, whiteSpace: "pre-wrap" as const, fontFamily: "Georgia, 'Times New Roman', serif", color: "#1f2937", boxShadow: "inset 0 2px 12px rgba(0,0,0,0.03)" }}>
             {complaintLetter}
           </div>
         </div>
       )}
 
-      {/* Disclaimer */}
+      {/* ── 10. DISCLAIMER ── */}
       <div style={{ marginTop: 32, padding: "12px 16px", background: "#f1f5f9", borderRadius: 8, fontSize: 11, color: "#64748b", lineHeight: 1.6 }}>
         <strong style={{ color: "#374151" }}>RentalTruth</strong> is a consumer transparency tool. This analysis is for informational purposes only and does not constitute legal advice. Always verify restrictions directly with your rental provider before travelling.
       </div>
