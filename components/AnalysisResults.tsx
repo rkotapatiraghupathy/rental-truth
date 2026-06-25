@@ -178,7 +178,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
                     </span>
                     <span style={{ fontSize: 13, color: "#374151", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{item.item}</span>
                   </div>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: item.likelihood === "certain" ? "#c0303c" : item.likelihood === "likely" ? "#b45309" : "#6b7280", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: item.likelihood === "certain" ? "#e8501a" : item.likelihood === "likely" ? "#b45309" : "#6b7280", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
                     + {item.estimatedAmount}
                   </span>
                 </div>
@@ -187,7 +187,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
             {terms.estimatedTrueCost != null && (
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", background: "#fff1f2", borderTop: "2px solid #fecdd3" }}>
                 <span style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e" }}>Estimated True Cost</span>
-                <span style={{ fontSize: 20, fontWeight: 900, color: "#c0303c" }}>£{terms.estimatedTrueCost.toFixed(2)}</span>
+                <span style={{ fontSize: 20, fontWeight: 900, color: "#e8501a" }}>£{terms.estimatedTrueCost.toFixed(2)}</span>
               </div>
             )}
           </div>
@@ -203,7 +203,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
               <div key={i} style={{
                 background: check.result ? "#f0fdf4" : "#fff1f2",
                 border: `1.5px solid ${check.result ? "#bbf7d0" : "#fecdd3"}`,
-                borderLeft: `4px solid ${check.result ? "#16a34a" : "#c0303c"}`,
+                borderLeft: `4px solid ${check.result ? "#16a34a" : "#e8501a"}`,
                 borderRadius: 10,
                 padding: "12px 16px",
                 display: "flex", gap: 12, alignItems: "flex-start",
@@ -221,7 +221,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
 
       {/* ── 4. ACTION BAR ── */}
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" as const }}>
-        <button onClick={downloadReport} style={{ background: "#c0303c", color: "#fff", border: "none", borderRadius: 10, padding: "13px 24px", fontSize: 15, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 14px rgba(230,57,70,0.35)" }}>
+        <button onClick={downloadReport} style={{ background: "#e8501a", color: "#fff", border: "none", borderRadius: 10, padding: "13px 24px", fontSize: 15, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 14px rgba(230,57,70,0.35)" }}>
           📥 Download Full Report
         </button>
         {complaintLetter && (
@@ -249,7 +249,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
             {(terms.deskSurvivalKit ?? []).map((tip, i) => (
               <div key={i} style={{ background: "#1a1a2e", borderRadius: 10, padding: "14px 18px", display: "flex", gap: 16, alignItems: "flex-start" }}>
-                <span style={{ color: "#c0303c", fontWeight: 900, fontSize: 18, flexShrink: 0, lineHeight: 1.4, minWidth: 20 }}>{i + 1}</span>
+                <span style={{ color: "#e8501a", fontWeight: 900, fontSize: 18, flexShrink: 0, lineHeight: 1.4, minWidth: 20 }}>{i + 1}</span>
                 <span style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.65 }}>{tip}</span>
               </div>
             ))}
@@ -279,7 +279,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
               <SectionLabel>👁️ Hidden Before Payment ({booking.hidden.length})</SectionLabel>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
                 {booking.hidden.map((h, i) => (
-                  <div key={i} style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #c0303c", borderRadius: 10, padding: "14px 16px" }}>
+                  <div key={i} style={{ background: "#fff1f2", border: "1.5px solid #fecdd3", borderLeft: "4px solid #e8501a", borderRadius: 10, padding: "14px 16px" }}>
                     <div style={{ display: "flex", gap: 10 }}>
                       <span style={{ fontSize: 20 }}>🚫</span>
                       <div>
@@ -330,7 +330,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
       {/* ── 9. COMPLAINT LETTER ── */}
       {complaintLetter && showLetter && (
         <div style={{ marginTop: 24 }}>
-          <div style={{ background: "#1a1a2e", borderRadius: "12px 12px 0 0", padding: "20px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "3px solid #c0303c" }}>
+          <div style={{ background: "#1a1a2e", borderRadius: "12px 12px 0 0", padding: "20px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "3px solid #e8501a" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 22 }}>✉️</span>
               <div>
@@ -339,7 +339,7 @@ export default function AnalysisResults({ result }: { result: AnalysisResult }) 
               </div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 700, color: "#c0303c", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 6, padding: "7px 14px", cursor: "pointer" }}>
+              <button onClick={copyLetter} style={{ fontSize: 12, fontWeight: 700, color: "#e8501a", background: "rgba(230,57,70,0.12)", border: "1px solid rgba(230,57,70,0.25)", borderRadius: 6, padding: "7px 14px", cursor: "pointer" }}>
                 {copied ? "✓ Copied!" : "📋 Copy"}
               </button>
               <button onClick={printLetter} style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", background: "rgba(255,255,255,0.06)", border: "1px solid #2d3748", borderRadius: 6, padding: "7px 14px", cursor: "pointer" }}>

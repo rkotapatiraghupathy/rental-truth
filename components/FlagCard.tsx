@@ -4,7 +4,7 @@ import type { Flag } from "@/lib/types";
 const COLOURS = {
   green: { bg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", border: "#bbf7d0", leftBorder: "#16a34a", icon: "✅", text: "#14532d", badgeBg: "#dcfce7", badgeText: "#166534", pulse: "flag-pulse-green" },
   amber: { bg: "linear-gradient(135deg, #fffbeb 0%, #fef9c3 100%)", border: "#fde68a", leftBorder: "#f59e0b", icon: "⚠️", text: "#92400e", badgeBg: "#fef3c7", badgeText: "#92400e", pulse: "flag-pulse-amber" },
-  red:   { bg: "linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%)", border: "#fecdd3", leftBorder: "#c0303c", icon: "🚫", text: "#881337", badgeBg: "#fee2e2", badgeText: "#881337", pulse: "flag-pulse-red" },
+  red:   { bg: "linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%)", border: "#fecdd3", leftBorder: "#e8501a", icon: "🚫", text: "#881337", badgeBg: "#fee2e2", badgeText: "#881337", pulse: "flag-pulse-red" },
 };
 
 export default function FlagCard({ flag }: { flag: Flag }) {

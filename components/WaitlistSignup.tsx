@@ -63,7 +63,7 @@ export default function WaitlistSignup({ compact = false }: { compact?: boolean 
         <button
           onClick={handleSubmit}
           disabled={status === "loading" || !email.includes("@")}
-          style={{ background: status === "loading" ? "#d1d5db" : "#c0303c", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", fontSize: 14, fontWeight: 700, cursor: status === "loading" ? "not-allowed" : "pointer", whiteSpace: "nowrap" as const }}
+          style={{ background: status === "loading" ? "#d1d5db" : "#e8501a", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", fontSize: 14, fontWeight: 700, cursor: status === "loading" ? "not-allowed" : "pointer", whiteSpace: "nowrap" as const }}
         >
           {status === "loading" ? "Joining…" : "Notify Me"}
         </button>
