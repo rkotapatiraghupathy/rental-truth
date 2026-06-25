@@ -25,9 +25,46 @@ const STATS = [
   { stat: "Free",    label: "Always free for consumers" },
 ];
 
+const FAQS = [
+  {
+    question: "Is RentalTruth free to use?",
+    answer: "Yes, completely free. No account required, no subscription, and no hidden charges. RentalTruth is built for consumers and will always be free to use.",
+  },
+  {
+    question: "What car hire restrictions does RentalTruth detect?",
+    answer: "Flight-arrival requirements, credit card-only rules, deposit pre-auth holds, daily mileage limits, young driver age surcharges, cross-border bans, fuel policy traps (full-to-empty), and non-refundable terms. Anything buried in the fine print.",
+  },
+  {
+    question: "Can RentalTruth help me get a refund?",
+    answer: "Yes. For high-risk bookings, RentalTruth generates a draft complaint letter citing UK Consumer Rights Act 2015. You can copy or print it and send it directly to Booking.com, the rental company, or your card provider for a chargeback.",
+  },
+  {
+    question: "Which car hire companies does it work with?",
+    answer: "All major companies — Alamo, Hertz, Enterprise, Europcar, Avis, Budget, Sixt, Thrifty, Dollar, National, and any other provider that issues standard English booking terms. If it has T&Cs, RentalTruth can read them.",
+  },
+  {
+    question: "Does it work for Booking.com car hire?",
+    answer: "Yes. Paste your Booking.com confirmation email into the Booking Terms tab. Add the booking page content to the optional second tab and RentalTruth will also check what was — and wasn't — disclosed before you paid.",
+  },
+];
+
 export default function Home() {
   return (
     <div style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", minHeight: "100vh", background: "#f8f7f4" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "RentalTruth",
+          "url": "https://rentaltruth.co.uk",
+          "description": "Free AI tool that reads car hire booking terms and flags hidden restrictions before consumers pay.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Web",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+          "creator": { "@type": "Organization", "name": "RentalTruth", "url": "https://rentaltruth.co.uk" },
+        }) }}
+      />
 
       {/* ── Nav ── */}
       <nav style={{ background: "rgba(13,13,30,0.96)", backdropFilter: "blur(12px)", padding: "0 24px", borderBottom: "2px solid #e63946", position: "sticky", top: 0, zIndex: 50 }}>
@@ -179,6 +216,33 @@ export default function Home() {
           <AnalyserTool />
         </section>
 
+        {/* FAQ */}
+        <section style={{ padding: "80px 0 60px" }}>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": FAQS.map(f => ({
+                "@type": "Question",
+                "name": f.question,
+                "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+              })),
+            }) }}
+          />
+          <h2 style={{ fontSize: "clamp(22px, 3vw, 34px)", fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", textAlign: "center", letterSpacing: "-0.5px" }}>Common questions</h2>
+          <p style={{ fontSize: 15, color: "#6b7280", textAlign: "center", margin: "0 0 40px" }}>Everything you need to know before you paste your terms</p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+            {FAQS.map(({ question, answer }) => (
+              <div key={question} className="hover-card" style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderLeft: "4px solid #e63946", borderRadius: 12, padding: "22px 24px" }}>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>
+                  {question}
+                </div>
+                <p style={{ margin: 0, fontSize: 14, color: "#374151", lineHeight: 1.75 }}>{answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
       </div>
 
